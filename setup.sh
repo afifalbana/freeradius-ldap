@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install FreeRadius to work with OpenLDAP
-include variables.sh
+source variables.sh
 
 # Update software packages
 sudo yum -y update
@@ -19,16 +19,16 @@ sudo wget http://open.rhx.it/phamm/schema/radius.schema -o /etc/openldap/schema/
 # Create slapd config file and include radius schema.
 SLAPD_FILE=/etc/openldap/slapd.conf
 echo "include /etc/openldap/schema/radius.schema" | sudo tee -a $SLAPD_FILE
-sudo chmod ldap:ldap $SLAPD_FILE
+sudo chown ldap:ldap $SLAPD_FILE
 
 # Copy default and inner-tunnel config.
-sudo cp config/RadiusDefaultConfig /etc/raddb/sites-available/default
-sudo cp config/RadiusInTunnelConfig /etc/raddb/sites-available/inner-tunnel
-sudo chgroup radiusd /etc/raddb/sites-available/inner-tunnel
-sudo chgroup radiusd /etc/raddb/sites-available/default
+sudo cp ./config/RadiusDefaultConfig /etc/raddb/sites-available/default
+sudo cp ./config/RadiusInTunnelConfig /etc/raddb/sites-available/inner-tunnel
+sudo chgrp radiusd /etc/raddb/sites-available/inner-tunnel
+sudo chgrp radiusd /etc/raddb/sites-available/default
 
 # Configure Radius to use LDAP module.
-sudo cp config/RadiusLDAPConfig /etc/raddb/mods-available/ldap
+sudo cp ./config/RadiusLDAPConfig /etc/raddb/mods-available/ldap
 sudo ln -s /etc/raddb/mods-available/ldap /etc/raddb/mods-enabled/ldap
 
 subst_ldap () {
@@ -44,7 +44,7 @@ subst_ldap "@LDAP_USER_BASEDN@" "${LDAP_USER_BASEDN}"
 subst_ldap "@LDAP_GROUP_BASEDN@" "${LDAP_GROUP_BASEDN}"
 
 # Configure Radius clients.
-sudo cp config/RadiusClientConfig /etc/raddb/clients.conf
+sudo cp ./config/RadiusClientConfig /etc/raddb/clients.conf
 
 subst_client () {
   sudo sed -i -e "s/${1}/${2}/g" /etc/raddb/clients.conf
