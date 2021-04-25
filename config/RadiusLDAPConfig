@@ -16,7 +16,7 @@ ldap {
 	#  - ldaps:// (LDAP over SSL)
 	#  - ldapi:// (LDAP over Unix socket)
 	#  - ldapc:// (Connectionless LDAP)
-	server = @LDAP_HOST@
+	server = "@LDAP_HOST@"
 	# server = 'ldap.rrdns.example.org'
 	# server = 'ldap.rrdns.example.org'
 
@@ -25,12 +25,12 @@ ldap {
 
 	#  Administrator account for searching and possibly modifying.
 	#  If using SASL + KRB5 these should be commented out.
-	identity = @LDAP_USER@
-	password = @LDAP_PASS@
+	identity = "@LDAP_USER@"
+	password = "@LDAP_PASS@"
 
 	#  Unless overridden in another section, the dn from which all
 	#  searches will start from.
-	base_dn = @LDAP_BASE@
+	base_dn = "@LDAP_BASE@"
 
 	#
 	#  SASL parameters to use for admin binds
@@ -120,9 +120,9 @@ ldap {
 		#  Where only a list is specified as the RADIUS attribute,
 		#  the value of the LDAP attribute is parsed as a valuepair
 		#  in the same format as the 'valuepair_attribute' (above).
-		control:			+= 'radiusControlAttribute'
+#		control:			+= 'radiusControlAttribute'
 		request:			+= 'radiusRequestAttribute'
-		reply:				+= 'radiusReplyAttribute'
+#		reply:				+= 'radiusReplyAttribute'
 	}
 
 	#  Set to yes if you have eDirectory and want to use the universal
@@ -150,7 +150,7 @@ ldap {
 	#
 	user {
 		#  Where to start searching in the tree for users
-		base_dn = @LDAP_USER_BASEDN@
+		base_dn = "@LDAP_USER_BASEDN@"
 
 		#  Filter for user objects, should be specific enough
 		#  to identify a single user object.
@@ -230,7 +230,7 @@ ldap {
 	#
 	group {
 		#  Where to start searching in the tree for groups
-		base_dn = @LDAP_GROUP_BASEDN@
+		base_dn = "@LDAP_GROUP_BASEDN@"
 
 		#  Filter for group objects, should match all available
 		#  group objects a user might be a member of.
@@ -242,12 +242,12 @@ ldap {
 		#  Attribute that uniquely identifies a group.
 		#  Is used when converting group DNs to group
 		#  names.
-#		name_attribute = cn
+		name_attribute = cn
 
 		#  Filter to find group objects a user is a member of.
 		#  That is, group objects with attributes that
 		#  identify members (the inverse of membership_attribute).
-#		membership_filter = "(|(member=%{control:Ldap-UserDn})(memberUid=%{%{Stripped-User-Name}:-%{User-Name}}))"
+		membership_filter = "(|(member=%{control:Ldap-UserDn})(memberUid=%{%{Stripped-User-Name}:-%{User-Name}}))"
 
 		#  The attribute in user objects which contain the names
 		#  or DNs of groups a user is a member of.
@@ -255,7 +255,7 @@ ldap {
 		#  Unless a conversion between group name and group DN is
 		#  needed, there's no requirement for the group objects
 		#  referenced to actually exist.
-		membership_attribute = 'memberOf'
+#		membership_attribute = 'memberOf'
 
 		#  If cacheable_name or cacheable_dn are enabled,
 		#  all group information for the user will be
@@ -310,7 +310,7 @@ ldap {
 	#
 	client {
 		#   Where to start searching in the tree for clients
-		base_dn = @LDAP_USER_BASEDN@
+		base_dn = "@LDAP_USER_BASEDN@"
 
 		#
 		#  Filter to match client objects
